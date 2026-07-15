@@ -1,1 +1,61 @@
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAFP - Dashboard</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
+    <link rel="icon" href="/assets/images/favicon.ico">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/pages/dashboard.html" class="logo">🍽️ SAFP</a>
+            <div class="nav-links">
+                <a href="dashboard.html" class="active">Dashboard</a>
+                <a href="members.html">Miembros</a>
+                <a href="menu.html">Menú</a>
+                <a href="config.html">Configuración</a>
+                <a href="history.html">Historial</a>
+                <button id="logoutBtn" class="btn-logout">Cerrar Sesión</button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Dashboard Content -->
+    <div class="container" style="padding: 20px 0;">
+        <h1>📊 Dashboard</h1>
+        <p>Bienvenido al Sistema Alimentario Familiar Permanente</p>
+        
+        <!-- User Info -->
+        <div id="userInfo"></div>
+        
+        <!-- Stats -->
+        <div id="familySummary" class="stats-grid"></div>
+        
+        <!-- Config Summary -->
+        <div id="configSummary" style="margin: 20px 0;"></div>
+        
+        <!-- Actions -->
+        <div style="display: flex; gap: 10px; margin: 20px 0;">
+            <button onclick="window.location.href='menu.html'" class="btn-primary" style="width: auto;">
+                🍽️ Generar Nuevo Menú
+            </button>
+            <button onclick="window.location.href='members.html'" class="btn-secondary">
+                👨‍👩‍👧‍👦 Gestionar Miembros
+            </button>
+        </div>
+        
+        <!-- Recent Menus -->
+        <h2>📋 Menús Recientes</h2>
+        <div id="menuHistory" style="margin: 20px 0;"></div>
+        
+        <!-- Error Container -->
+        <div id="errorContainer"></div>
+    </div>
+    
+    <script type="module" src="/assets/js/dashboard.js"></script>
+</body>
+</html>
