@@ -3,6 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -10,16 +11,21 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
-      - name: Inject environment variables
+      - name: Create config file with environment variables
         run: |
-          # Crear config.js con las variables inyectadas
-          echo "// Archivo generado automáticamente por GitHub Actions" > assets/js/config.js
-          echo "export const CONFIG = {" >> assets/js/config.js
-          echo "    SUPABASE_URL: '${{ secrets.SUPABASE_URL }}'," >> assets/js/config.js
-          echo "    SUPABASE_ANON_KEY: '${{ secrets.SUPABASE_ANON_KEY }}'" >> assets/js/config.js
-          echo "};" >> assets/js/config.js
+          # Crear carpeta assets/js si no existe
+          mkdir -p assets/js
           
-          # Mostrar el contenido para verificar (opcional)
+          # Generar config.js con las variables
+          cat > assets/js/config.js << 'EOF'
+          // Archivo generado automáticamente por GitHub Actions
+          export const CONFIG = {
+              SUPABASE_URL: '${{ secrets.SUPABASE_URL }}',
+              SUPABASE_ANON_KEY: '${{ secrets.SUPABASE_ANON_KEY }}'
+          };
+          EOF
+          
+          # Verificar que se creó correctamente
           echo "✅ Config.js generado:"
           cat assets/js/config.js
       
