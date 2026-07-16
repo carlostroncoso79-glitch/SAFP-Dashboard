@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAFP - Miembros</title>
+    <link rel="stylesheet" href="/SAFP-Dashboard/assets/css/styles.css">
+    <link rel="stylesheet" href="/SAFP-Dashboard/assets/css/members.css">
+    <link rel="icon" href="/SAFP-Dashboard/assets/images/favicon.ico">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/SAFP-Dashboard/pages/dashboard.html" class="logo">🍽️ SAFP</a>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="members.html" class="active">Miembros</a>
+                <a href="menu.html">Menú</a>
+                <a href="config.html">Configuración</a>
+                <a href="history.html">Historial</a>
+                <button id="logoutBtn" class="btn-logout">Cerrar Sesión</button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Content -->
+    <div class="container" style="padding: 20px 0;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1>👨‍👩‍👧‍👦 Miembros de la Familia</h1>
+            <button id="addMemberBtn" class="btn-primary" style="width: auto;">
+                ➕ Agregar Miembro
+            </button>
+        </div>
+        
+        <!-- Lista de miembros -->
+        <div id="membersList" class="members-grid"></div>
+        
+        <!-- Modal para agregar/editar miembro -->
+        <div id="memberModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="modal-close">&times;</span>
+                <h2 id="modalTitle">Agregar Miembro</h2>
+                <form id="memberForm">
+                    <input type="hidden" id="memberId">
+                    
+                    <div class="form-group">
+                        <label for="memberName">Nombre</label>
+                        <input type="text" id="memberName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="memberRole">Rol</label>
+                        <select id="memberRole" required>
+                            <option value="hombre">Hombre</option>
+                            <option value="mujer">Mujer</option>
+                            <option value="niña">Niña</option>
+                            <option value="niño">Niño</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="memberAge">Edad</label>
+                        <input type="number" id="memberAge" min="1" max="120" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="memberWeight">Peso (kg)</label>
+                        <input type="number" id="memberWeight" step="0.1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="memberHeight">Estatura (cm)</label>
+                        <input type="number" id="memberHeight" step="0.1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="memberObjective">Objetivo</label>
+                        <select id="memberObjective" required>
+                            <option value="bajar_grasa">Bajar grasa</option>
+                            <option value="ganar_musculo">Ganar músculo</option>
+                            <option value="mantener">Mantener peso</option>
+                            <option value="crecimiento">Crecimiento (niños)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="veganDaysGroup">
+                        <label>Días de proteína vegetal (Hombre)</label>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <label><input type="checkbox" class="vegan-day" value="1"> Lunes</label>
+                            <label><input type="checkbox" class="vegan-day" value="2"> Martes</label>
+                            <label><input type="checkbox" class="vegan-day" value="3"> Miércoles</label>
+                            <label><input type="checkbox" class="vegan-day" value="4"> Jueves</label>
+                            <label><input type="checkbox" class="vegan-day" value="5"> Viernes</label>
+                            <label><input type="checkbox" class="vegan-day" value="6"> Sábado</label>
+                            <label><input type="checkbox" class="vegan-day" value="7"> Domingo</label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+        
+        <div id="errorContainer"></div>
+    </div>
+    
+    <script type="module" src="/SAFP-Dashboard/assets/js/family.js"></script>
+</body>
+</html>

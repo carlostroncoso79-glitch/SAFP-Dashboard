@@ -1,0 +1,130 @@
+/* ─── TABLA DE MENÚ ─── */
+.menu-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-white);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.menu-table thead {
+    background: var(--primary);
+    color: white;
+}
+
+.menu-table th {
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.menu-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #E0E0E0;
+    vertical-align: top;
+}
+
+.menu-table tbody tr:hover {
+    background: var(--primary-light);
+}
+
+.menu-table .day-header {
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.menu-table .meal-cell {
+    font-size: 14px;
+}
+
+.menu-table .meal-cell .protein {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.menu-table .meal-cell .carbo {
+    color: var(--text-light);
+}
+
+.menu-table .meal-cell .portion {
+    font-size: 12px;
+    color: var(--text-light);
+    display: block;
+}
+
+.menu-table .ayuno {
+    color: var(--danger);
+    font-weight: 600;
+    font-style: italic;
+}
+
+.menu-table .vegan {
+    color: var(--success);
+    font-weight: 600;
+}
+
+/* ─── LISTA DE COMPRAS ─── */
+.shopping-list {
+    background: var(--bg-white);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin-top: 20px;
+}
+
+.shopping-list h2 {
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+
+.shopping-category {
+    margin-bottom: 20px;
+}
+
+.shopping-category h3 {
+    color: var(--text-dark);
+    border-bottom: 2px solid var(--primary-light);
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+}
+
+.shopping-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.shopping-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: var(--bg-light);
+    border-radius: 6px;
+}
+
+.shopping-item .item-name {
+    font-weight: 500;
+}
+
+.shopping-item .item-quantity {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+    .menu-table {
+        font-size: 12px;
+    }
+    
+    .menu-table th,
+    .menu-table td {
+        padding: 8px 10px;
+    }
+    
+    .shopping-items {
+        grid-template-columns: 1fr;
+    }
+}

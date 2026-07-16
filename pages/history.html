@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAFP - Historial</title>
+    <link rel="stylesheet" href="/SAFP-Dashboard/assets/css/styles.css">
+    <link rel="icon" href="/SAFP-Dashboard/assets/images/favicon.ico">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/SAFP-Dashboard/pages/dashboard.html" class="logo">🍽️ SAFP</a>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="members.html">Miembros</a>
+                <a href="menu.html">Menú</a>
+                <a href="config.html">Configuración</a>
+                <a href="history.html" class="active">Historial</a>
+                <button id="logoutBtn" class="btn-logout">Cerrar Sesión</button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Content -->
+    <div class="container" style="padding: 20px 0;">
+        <h1>📋 Historial de Menús</h1>
+        <p>Menús generados anteriormente</p>
+        
+        <div id="historyContainer" style="margin: 20px 0;"></div>
+        <div id="errorContainer"></div>
+    </div>
+    
+    <script type="module">
+        import { supabase, getProfile, getMenus } from '/assets/js/supabase.js';
+        import { checkAuth, loadUserProfile } from '/assets/js/auth.js';
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            const session = await checkAuth();
+            if (!session) return;
+            
+            const profile = await loadUserProfile();
+            if (!profile) return;
+            
+            try {
+                const menus = await getMenus(profile.family_id);
+                const container = document.getElementById('historyContainer');
+                
+                if (menus.length === 0) {
+                    container.innerHTML = '<p style="color: var(--text-light);">No hay menús generados aún.</p>';
+                    return;
+                }
+                
+                container.innerHTML = menus.map(menu => `
+                    <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                        <div>
+                            <strong>📅 ${menu.month}/${menu.year}</strong>
+                            <span style="margin-left: 15px;">Semana ${menu.week_number}</span>
+                            <span style="margin-left: 15px; padding: 2px 10px; border-radius: 12px; background: ${menu.status === 'aprobado' ? '#EAFAF1' : '#FDEDEC'}; color: ${menu.status === 'aprobado' ? '#27AE60' : '#E74C3C'}; font-size: 12px;">
+                                ${menu.status}
+                            </span>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="viewMenu('${menu.id}')" style="background: var(--primary); color: white; border: none; padding: 6px 16px; border-radius: 6px; cursor: pointer;">Ver</button>
+                            <button onclick="deleteMenu('${menu.id}')" style="background: var(--danger); color: white; border: none; padding: 6px 16px; border-radius: 6px; cursor: pointer;">Eliminar</button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Funciones globales para el historial
+                window.viewMenu = (id) => {
+                    window.location.href = `/pages/menu.html?id=${id}`;
+                };
+                
+                window.deleteMenu = async (id) => {
+                    if (!confirm('¿Estás seguro de eliminar este menú?')) return;
+                    
+                    try {
+                        const { error } = await supabase
+                            .from('weekly_menus')
+                            .delete()
+                            .eq('id', id);
+                        
+                        if (error) throw error;
+                        location.reload();
+                    } catch (error) {
+                        console.error('Error al eliminar menú:', error);
+                        alert('❌ Error al eliminar el menú');
+                    }
+                };
+                
+            } catch (error) {
+                console.error('Error al cargar historial:', error);
+                document.getElementById('errorContainer').innerHTML = `
+                    <div style="color: var(--danger); padding: 10px; background: #FDEDEC; border-radius: 8px;">
+                        ❌ Error al cargar el historial
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

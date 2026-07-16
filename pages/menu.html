@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAFP - Generador de Menú</title>
+    <link rel="stylesheet" href="/SAFP-Dashboard/assets/css/styles.css">
+    <link rel="stylesheet" href="/SAFP-Dashboard/assets/css/menu.css">
+    <link rel="icon" href="/SAFP-Dashboard/assets/images/favicon.ico">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/SAFP-Dashboard/pages/dashboard.html" class="logo">🍽️ SAFP</a>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="members.html">Miembros</a>
+                <a href="menu.html" class="active">Menú</a>
+                <a href="config.html">Configuración</a>
+                <a href="history.html">Historial</a>
+                <button id="logoutBtn" class="btn-logout">Cerrar Sesión</button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Content -->
+    <div class="container" style="padding: 20px 0;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1>🍽️ Generador de Menú</h1>
+            <div style="display: flex; gap: 10px;">
+                <button id="generateMenuBtn" class="btn-primary" style="width: auto;">
+                    🚀 Generar Menú Mensual
+                </button>
+                <button id="exportPdfBtn" class="btn-secondary" style="width: auto;" disabled>
+                    📄 Exportar PDF
+                </button>
+            </div>
+        </div>
+        
+        <!-- Filtros -->
+        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+            <div class="form-group" style="margin-bottom: 0;">
+                <label for="weekFilter">Semana</label>
+                <select id="weekFilter">
+                    <option value="all">Todas</option>
+                    <option value="1">Semana 1</option>
+                    <option value="2">Semana 2</option>
+                    <option value="3">Semana 3</option>
+                    <option value="4">Semana 4</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+                <label for="dayFilter">Día</label>
+                <select id="dayFilter">
+                    <option value="all">Todos</option>
+                    <option value="lunes">Lunes</option>
+                    <option value="martes">Martes</option>
+                    <option value="miercoles">Miércoles</option>
+                    <option value="jueves">Jueves</option>
+                    <option value="viernes">Viernes</option>
+                    <option value="sabado">Sábado</option>
+                    <option value="domingo">Domingo</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Loading -->
+        <div id="loading" style="display: none; text-align: center; padding: 40px;">
+            <div style="font-size: 48px;">⏳</div>
+            <p>Generando menú...</p>
+        </div>
+        
+        <!-- Menú -->
+        <div id="menuContainer"></div>
+        
+        <!-- Lista de Compras -->
+        <div id="shoppingListContainer" style="margin-top: 40px;"></div>
+        
+        <div id="errorContainer"></div>
+    </div>
+    
+    <script type="module" src="/SAFP-Dashboard/assets/js/menuGenerator.js"></script>
+</body>
+</html>
