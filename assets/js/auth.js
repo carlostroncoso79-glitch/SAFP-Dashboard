@@ -21,7 +21,7 @@ if (loginForm) {
             if (error) throw error;
             
             // Redirigir al dashboard
-            window.location.href = '/pages/dashboard.html';
+            window.location.href = '/SAFP-Dashboard/pages/dashboard.html';
         } catch (error) {
             alert('❌ Error al iniciar sesión: ' + error.message);
         }
