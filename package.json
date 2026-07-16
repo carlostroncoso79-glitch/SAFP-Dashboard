@@ -1,0 +1,11 @@
+{
+  "name": "safp-dashboard",
+  "version": "1.0.0",
+  "description": "Sistema Alimentario Familiar Permanente",
+  "scripts": {
+    "build": "echo 'Build completed'"
+  },
+  "devDependencies": {
+    "@vercel/static": "^1.0.0"
+  }
+}
