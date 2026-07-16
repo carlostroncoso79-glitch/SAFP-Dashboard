@@ -31,4 +31,4 @@ Dashboard interactivo para gestionar la alimentación familiar basado en el manu
 MIT
 
 ### 👨‍👩‍👧‍👦 Autor
-Carlos - Proyecto SAFP
+Carlos - Proyecto SAFP 
