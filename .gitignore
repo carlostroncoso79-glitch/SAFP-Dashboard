@@ -30,3 +30,5 @@ build/
 # Logs
 logs/
 *.log
+
+.vercel
