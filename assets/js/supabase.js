@@ -2,7 +2,7 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
 // ⚠️ REEMPLAZA ESTOS VALORES CON LOS TUYOS
-const SUPABASE_URL = 'https://tu-proyecto.supabase.co';
+const SUPABASE_URL = 'https://szofumslwdhffihzbzff.supabase.co';
 const SUPABASE_ANON_KEY = 'tu-anon-key-public';
 
 // Crear cliente Supabase
