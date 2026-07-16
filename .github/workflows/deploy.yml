@@ -12,11 +12,15 @@ jobs:
       
       - name: Inject environment variables
         run: |
-          # Inyectar variables en config.js
-          sed -i "s|{{SUPABASE_URL}}|${{ secrets.SUPABASE_URL }}|g" assets/js/config.js
-          sed -i "s|{{SUPABASE_ANON_KEY}}|${{ secrets.SUPABASE_ANON_KEY }}|g" assets/js/config.js
+          # Crear config.js con las variables inyectadas
+          echo "// Archivo generado automáticamente por GitHub Actions" > assets/js/config.js
+          echo "export const CONFIG = {" >> assets/js/config.js
+          echo "    SUPABASE_URL: '${{ secrets.SUPABASE_URL }}'," >> assets/js/config.js
+          echo "    SUPABASE_ANON_KEY: '${{ secrets.SUPABASE_ANON_KEY }}'" >> assets/js/config.js
+          echo "};" >> assets/js/config.js
           
-          # Verificar que se inyectaron
+          # Mostrar el contenido para verificar (opcional)
+          echo "✅ Config.js generado:"
           cat assets/js/config.js
       
       - name: Deploy to GitHub Pages
@@ -25,3 +29,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
           force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: 'Deploy con variables de entorno inyectadas'
