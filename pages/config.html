@@ -1,1 +1,150 @@
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAFP - Configuración</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="icon" href="/assets/images/favicon.ico">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/pages/dashboard.html" class="logo">🍽️ SAFP</a>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="members.html">Miembros</a>
+                <a href="menu.html">Menú</a>
+                <a href="config.html" class="active">Configuración</a>
+                <a href="history.html">Historial</a>
+                <button id="logoutBtn" class="btn-logout">Cerrar Sesión</button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Content -->
+    <div class="container" style="padding: 20px 0;">
+        <h1>⚙️ Configuración del Sistema</h1>
+        <p>Configura las reglas del sistema alimentario</p>
+        
+        <form id="configForm" style="max-width: 600px; margin: 20px 0;">
+            <div class="form-group">
+                <label for="familyName">Nombre de la Familia</label>
+                <input type="text" id="familyName" placeholder="Apellido o nombre familiar">
+            </div>
+            
+            <div class="form-group">
+                <label for="fastingEnabled">Ayuno Intermitente</label>
+                <select id="fastingEnabled">
+                    <option value="true">✅ Activado</option>
+                    <option value="false">❌ Desactivado</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Días de Ayuno (Adultos)</label>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <label><input type="checkbox" class="fasting-day" value="1" checked> Lun</label>
+                    <label><input type="checkbox" class="fasting-day" value="2"> Mar</label>
+                    <label><input type="checkbox" class="fasting-day" value="3"> Mié</label>
+                    <label><input type="checkbox" class="fasting-day" value="4" checked> Jue</label>
+                    <label><input type="checkbox" class="fasting-day" value="5"> Vie</label>
+                    <label><input type="checkbox" class="fasting-day" value="6"> Sáb</label>
+                    <label><input type="checkbox" class="fasting-day" value="7" checked> Dom</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="budgetMonthly">Presupuesto Mensual (COP)</label>
+                <input type="number" id="budgetMonthly" placeholder="1200000" step="10000">
+            </div>
+            
+            <button type="submit" class="btn-primary">💾 Guardar Configuración</button>
+        </form>
+        
+        <div id="errorContainer"></div>
+    </div>
+    
+    <script type="module">
+        import { supabase, getProfile, getSystemConfig } from '/assets/js/supabase.js';
+        import { checkAuth, loadUserProfile } from '/assets/js/auth.js';
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            const session = await checkAuth();
+            if (!session) return;
+            
+            const profile = await loadUserProfile();
+            if (!profile) return;
+            
+            // Cargar configuración
+            try {
+                const config = await getSystemConfig(profile.family_id);
+                if (config) {
+                    document.getElementById('fastingEnabled').value = config.fasting_enabled.toString();
+                    document.getElementById('budgetMonthly').value = config.budget_monthly || '';
+                    
+                    // Días de ayuno
+                    if (config.fasting_days) {
+                        document.querySelectorAll('.fasting-day').forEach(cb => {
+                            cb.checked = config.fasting_days.includes(parseInt(cb.value));
+                        });
+                    }
+                }
+                
+                // Cargar nombre de familia
+                const { data: family } = await supabase
+                    .from('families')
+                    .select('name')
+                    .eq('id', profile.family_id)
+                    .single();
+                    
+                if (family) {
+                    document.getElementById('familyName').value = family.name;
+                }
+            } catch (error) {
+                console.error('Error al cargar configuración:', error);
+            }
+            
+            // Guardar configuración
+            document.getElementById('configForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const familyName = document.getElementById('familyName').value;
+                const fastingEnabled = document.getElementById('fastingEnabled').value === 'true';
+                const fastingDays = [];
+                document.querySelectorAll('.fasting-day:checked').forEach(cb => {
+                    fastingDays.push(parseInt(cb.value));
+                });
+                const budgetMonthly = parseFloat(document.getElementById('budgetMonthly').value) || null;
+                
+                try {
+                    // Actualizar nombre de familia
+                    await supabase
+                        .from('families')
+                        .update({ name: familyName })
+                        .eq('id', profile.family_id);
+                    
+                    // Actualizar configuración
+                    const { error } = await supabase
+                        .from('system_config')
+                        .upsert({
+                            family_id: profile.family_id,
+                            fasting_enabled: fastingEnabled,
+                            fasting_days: fastingDays,
+                            budget_monthly: budgetMonthly,
+                            updated_at: new Date()
+                        });
+                    
+                    if (error) throw error;
+                    
+                    alert('✅ Configuración guardada exitosamente');
+                } catch (error) {
+                    console.error('Error al guardar configuración:', error);
+                    alert('❌ Error al guardar la configuración');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
