@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmando autenticación...</title>
+    <link rel="icon" href="/SAFP-Dashboard/assets/images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <p>✅ Confirmando autenticación... Redirigiendo al sistema...</p>
+    <p>Si no eres redirigido, <a href="/SAFP-Dashboard/pages/login.html">haz clic aquí</a>.</p>
+    
+    <script>
+        // Obtener el token de la URL
+        const params = new URLSearchParams(window.location.hash.substring(1));
+        const accessToken = params.get('access_token');
+        const refreshToken = params.get('refresh_token');
+        const type = params.get('type');
+
+        if (accessToken) {
+            // Guardar tokens en localStorage
+            localStorage.setItem('sb-access-token', accessToken);
+            if (refreshToken) localStorage.setItem('sb-refresh-token', refreshToken);
+            
+            // Redirigir al dashboard
+            window.location.href = '/SAFP-Dashboard/pages/dashboard.html';
+        } else {
+            // Si no hay token, redirigir al login
+            window.location.href = '/SAFP-Dashboard/pages/login.html';
+        }
+    </script>
+</body>
+</html>
