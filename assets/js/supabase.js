@@ -1,12 +1,37 @@
-// Configuración del cliente Supabase
+// assets/js/supabase.js
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+import { CONFIG } from './config.js';
 
-// ⚠️ REEMPLAZA ESTOS VALORES CON LOS TUYOS
-const SUPABASE_URL = 'https://szofumslwdhffihzbzff.supabase.co';
-const SUPABASE_ANON_KEY = 'tu-anon-key-public';
+// Verificar que las credenciales existan
+if (!CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY) {
+    throw new Error(`
+        ❌ Credenciales de Supabase no configuradas.
+        
+        En desarrollo local: crea un archivo .env
+        En Vercel: agrega las variables de entorno:
+        - VITE_SUPABASE_URL
+        - VITE_SUPABASE_ANON_KEY
+    `);
+}
 
 // Crear cliente Supabase
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+export const supabase = createClient(
+    CONFIG.SUPABASE_URL,
+    CONFIG.SUPABASE_ANON_KEY
+);
+
+// Helper: Verificar conexión
+export async function checkSupabaseConnection() {
+    try {
+        const { data, error } = await supabase.from('profiles').select('count').limit(1);
+        if (error) throw error;
+        console.log('✅ Conexión a Supabase exitosa');
+        return true;
+    } catch (error) {
+        console.error('❌ Error de conexión a Supabase:', error.message);
+        return false;
+    }
+}
 
 // Helper: Obtener usuario actual
 export async function getCurrentUser() {
